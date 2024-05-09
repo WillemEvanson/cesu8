@@ -5,7 +5,7 @@ authors = ["Willem Evanson <willemevanson@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/WillemEvanson/cesu8"
 description = "CESU-8 and Java CESU-8 string validation and manipulation."
-categories = ["cesu"]
+categories = ["text-processing"]
 edition = "2021"
 
 [dependencies]
