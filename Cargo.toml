@@ -1,0 +1,18 @@
+[package]
+name = "cesu8-str"
+version = "1.0.0"
+authors = ["Willem Evanson <willemevanson@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/WillemEvanson/cesu8"
+description = "CESU-8 and Java CESU-8 string validation and manipulation."
+categories = ["cesu"]
+edition = "2021"
+
+[dependencies]
+
+[features]
+default = ["alloc"]
+alloc = []
+
+[package.metadata.docs.rs]
+all-features = true
