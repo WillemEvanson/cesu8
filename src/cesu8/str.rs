@@ -15,7 +15,7 @@ use alloc::boxed::Box;
 
 /// A CESU-8 encoded string slice.
 #[repr(transparent)]
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Cesu8Str {
     pub(crate) internal: InternalStr,
 }
@@ -514,5 +514,11 @@ impl AsRef<[u8]> for Cesu8Str {
     #[inline]
     fn as_ref(&self) -> &[u8] {
         self.as_bytes()
+    }
+}
+
+impl core::fmt::Debug for Cesu8Str {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Debug::fmt(&self.internal, f)
     }
 }

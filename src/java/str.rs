@@ -15,7 +15,7 @@ use alloc::boxed::Box;
 
 /// A Java CESU-8 encoded string slice.
 #[repr(transparent)]
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct JavaStr {
     pub(crate) internal: InternalStr,
 }
@@ -514,5 +514,11 @@ impl AsRef<[u8]> for JavaStr {
     #[inline]
     fn as_ref(&self) -> &[u8] {
         self.as_bytes()
+    }
+}
+
+impl core::fmt::Debug for JavaStr {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Debug::fmt(&self.internal, f)
     }
 }

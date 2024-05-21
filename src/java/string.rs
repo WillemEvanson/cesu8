@@ -437,3 +437,9 @@ impl DerefMut for JavaString {
         unsafe { JavaStr::from_java_cesu8_unchecked_mut(self.internal.as_bytes_mut()) }
     }
 }
+
+impl core::fmt::Debug for JavaString {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Debug::fmt(&self.internal, f)
+    }
+}

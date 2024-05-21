@@ -113,6 +113,13 @@ impl InternalString {
         self.vec
     }
 
+    /// Extracts a string slice containing the entire `InternalString`.
+    #[inline]
+    #[must_use]
+    pub fn as_str(&self) -> &InternalStr {
+        self
+    }
+
     /// Appends a given string slice onto the end of this `InternalString`.
     #[inline]
     pub(crate) fn push_str(&mut self, str: &InternalStr) {
@@ -421,5 +428,11 @@ impl DerefMut for InternalString {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe { InternalStr::from_unchecked_mut(&mut self.vec) }
+    }
+}
+
+impl core::fmt::Debug for InternalString {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Debug::fmt(self.as_str(), f)
     }
 }

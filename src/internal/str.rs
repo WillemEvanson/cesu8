@@ -1,5 +1,6 @@
 use crate::internal::{InternalCharIndices, InternalChars};
 
+use core::fmt::Write;
 use core::ops::{
     Index, IndexMut, Range, RangeBounds, RangeFrom, RangeFull, RangeInclusive, RangeTo,
     RangeToInclusive,
@@ -14,7 +15,7 @@ use alloc::borrow::ToOwned;
 use alloc::boxed::Box;
 
 #[repr(transparent)]
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub(crate) struct InternalStr {
     bytes: [u8],
 }
@@ -619,5 +620,17 @@ impl AsRef<[u8]> for InternalStr {
     #[inline]
     fn as_ref(&self) -> &[u8] {
         self.as_bytes()
+    }
+}
+
+impl core::fmt::Debug for InternalStr {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.write_char('"')?;
+        for c in self.chars() {
+            for c in c.escape_debug() {
+                f.write_char(c)?;
+            }
+        }
+        f.write_char('"')
     }
 }
