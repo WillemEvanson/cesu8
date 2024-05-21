@@ -443,3 +443,9 @@ impl core::fmt::Debug for JavaString {
         core::fmt::Debug::fmt(&self.internal, f)
     }
 }
+
+impl core::fmt::Display for JavaString {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Display::fmt(&self.internal, f)
+    }
+}

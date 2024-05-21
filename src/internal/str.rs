@@ -634,3 +634,12 @@ impl core::fmt::Debug for InternalStr {
         f.write_char('"')
     }
 }
+
+impl core::fmt::Display for InternalStr {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        for c in self.chars() {
+            f.write_char(c)?;
+        }
+        Ok(())
+    }
+}

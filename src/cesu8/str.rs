@@ -522,3 +522,9 @@ impl core::fmt::Debug for Cesu8Str {
         core::fmt::Debug::fmt(&self.internal, f)
     }
 }
+
+impl core::fmt::Display for Cesu8Str {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Display::fmt(&self.internal, f)
+    }
+}
