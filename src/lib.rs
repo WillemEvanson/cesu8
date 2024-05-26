@@ -405,8 +405,12 @@ const fn validate_cesu8_internal<const CHECK_JAVA: bool>(v: &[u8]) -> Result<(),
         let idx = if len != 6 { len - 1 } else { 3 };
 
         // Check for overlong encoding, and if validating Java CESU-8, exclude
-        let overlong =
-            code_point < OVERLONG[idx] && !(CHECK_JAVA && code_point == 0x00 && len == 2);
+        let overlong = if CHECK_JAVA && code_point == 0x00 {
+            len != 2
+        } else {
+            code_point < OVERLONG[idx]
+        };
+
         let surrogate = (code_point >> 11) == 0x1B;
         if overlong || surrogate {
             err!(len as u8);

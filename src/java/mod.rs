@@ -50,3 +50,21 @@ pub fn from_java_cesu8(str: &JavaStr) -> Cow<'_, str> {
 pub fn from_utf8(str: &str) -> Cow<'_, JavaStr> {
     unsafe { core::mem::transmute(super::from_utf8::<true>(str)) }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::validate_cesu8_internal;
+
+    use super::encode_java;
+
+    #[test]
+    fn valid_roundtrip() {
+        let mut buf = [0; 6];
+        for i in 0..u32::MAX {
+            if let Some(c) = char::from_u32(i) {
+                let check = encode_java(c, &mut buf);
+                validate_cesu8_internal::<true>(check).unwrap();
+            }
+        }
+    }
+}

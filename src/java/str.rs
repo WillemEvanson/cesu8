@@ -47,7 +47,7 @@ impl JavaStr {
     /// not Java CESU-8.
     #[inline]
     pub fn from_java_cesu8(v: &[u8]) -> Result<&JavaStr, EncodingError> {
-        match validate_cesu8_internal::<false>(v) {
+        match validate_cesu8_internal::<true>(v) {
             Ok(()) => Ok(unsafe { JavaStr::from_java_cesu8_unchecked(v) }),
             Err(e) => Err(e),
         }
@@ -79,7 +79,7 @@ impl JavaStr {
     /// not Java CESU-8.
     #[inline]
     pub fn from_java_cesu8_mut(v: &mut [u8]) -> Result<&mut JavaStr, EncodingError> {
-        match validate_cesu8_internal::<false>(v) {
+        match validate_cesu8_internal::<true>(v) {
             Ok(()) => Ok(unsafe { JavaStr::from_java_cesu8_unchecked_mut(v) }),
             Err(e) => Err(e),
         }

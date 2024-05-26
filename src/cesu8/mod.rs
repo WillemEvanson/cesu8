@@ -17,14 +17,14 @@ use alloc::borrow::Cow;
 #[inline]
 #[must_use]
 pub const fn len_cesu8(c: char) -> usize {
-    super::len_cesu8::<true>(c as u32)
+    super::len_cesu8::<false>(c as u32)
 }
 
 /// Encodes a character as CESU-8 into the provided byte buffer, then returns
 /// the subslice of the buffer that contains the encoded character.
 #[inline]
 pub fn encode_cesu8(c: char, dst: &mut [u8]) -> &mut [u8] {
-    super::encode_cesu8_raw::<true>(c as u32, dst)
+    super::encode_cesu8_raw::<false>(c as u32, dst)
 }
 
 /// Converts a `Cesu8Str` into a `str`. We avoid copying unless necessary. In
@@ -49,4 +49,23 @@ pub fn from_cesu8(str: &Cesu8Str) -> Cow<'_, str> {
 #[must_use]
 pub fn from_utf8(str: &str) -> Cow<'_, Cesu8Str> {
     unsafe { core::mem::transmute(super::from_utf8::<false>(str)) }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use crate::validate_cesu8_internal;
+
+    use super::encode_cesu8;
+
+    #[test]
+    fn valid_roundtrip() {
+        let mut buf = [0; 6];
+        for i in 0..u32::MAX {
+            if let Some(c) = char::from_u32(i) {
+                let check = encode_cesu8(c, &mut buf);
+                validate_cesu8_internal::<false>(check).unwrap();
+            }
+        }
+    }
 }
