@@ -107,7 +107,7 @@ impl InternalStr {
                     // 3 or 6-byte characters
 
                     // SAFETY: Since this is a valid string, we know that there
-                    // must be at two more bytes.
+                    // must be at least two more bytes.
                     let next = unsafe { self.bytes.get(index + 1).unwrap_unchecked() };
                     if b == 0b1110_1101 && next & 0b1111_0000 == 0b1011_0000 {
                         // Second code-point in a surrogate pair
