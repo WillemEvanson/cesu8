@@ -51,7 +51,6 @@ pub fn from_utf8(str: &str) -> Cow<'_, Cesu8Str> {
     unsafe { core::mem::transmute(super::from_utf8::<false>(str)) }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::validate_cesu8_internal;
