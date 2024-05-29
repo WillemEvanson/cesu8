@@ -198,7 +198,7 @@ unsafe fn from_cesu8<const JAVA: bool>(str: &internal::InternalStr) -> Cow<'_, s
     // Fast forward to next supplementary character
     let v = str.as_bytes();
     while let Some(&byte) = v.get(index) {
-        // Check if byte marks the beginning of
+        // Check if byte marks the beginning of a supplementary character.
         if byte == 0b1110_1101 {
             let second = unsafe { *v.get(index + 1).unwrap_unchecked() };
             if second & 0b1111_0000 == 0b1010_0000 {
@@ -208,7 +208,7 @@ unsafe fn from_cesu8<const JAVA: bool>(str: &internal::InternalStr) -> Cow<'_, s
                 let mut iter = v[index..].iter();
                 let code_point = unsafe { next_code_point(&mut iter).unwrap_unchecked() };
 
-                string.push(char::from_u32(code_point).unwrap());
+                string.push(unsafe { char::from_u32_unchecked(code_point) });
 
                 index += 6;
                 last_index = index;
@@ -252,7 +252,6 @@ unsafe fn from_utf8<const JAVA: bool>(str: &str) -> Cow<'_, internal::InternalSt
     let mut string = None;
 
     let v = str.as_bytes();
-
     while let Some(&byte) = v.get(index) {
         if byte & 0b1111_1000 == 0b1111_0000 {
             let string =
@@ -344,6 +343,10 @@ const fn validate_cesu8_internal<const CHECK_JAVA: bool>(v: &[u8]) -> Result<(),
 
             let second = v[index + 1];
             let third = v[index + 2];
+            // This is safe, even though the three-byte encoding seems like it supports
+            // values overlapping this range. This is because any value that would end up in
+            // this range and yet be encoded in three-bytes is an unpaired supplementary
+            // character, which is not a valid Unicode character.
             if !(first == 0b1110_1101 && second & 0b1111_0000 == 0b1010_0000) {
                 // No surrogate pair
                 if second & 0b1100_0000 != 0b1000_0000 {
@@ -448,6 +451,10 @@ unsafe fn next_code_point<'a, I: Iterator<Item = &'a u8>>(bytes: &mut I) -> Opti
         let second = *bytes.next().unwrap_unchecked();
         let third = *bytes.next().unwrap_unchecked();
 
+        // This is safe, even though the three-byte encoding seems like it supports
+        // values overlapping this range. This is because any value that would end up in
+        // this range and yet be encoded in three-bytes is an unpaired supplementary
+        // character, which is not a valid Unicode character.
         if first != 0b1110_1101 || second & 0b1111_0000 != 0b1010_0000 {
             // 3-byte characters - no surrogate pair
             Some(

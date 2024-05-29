@@ -65,13 +65,14 @@ impl JavaString {
     /// A string ([`JavaString`]) is made of bytes ([`u8`]), and a vector of
     /// bytes ([`Vec<u8>`]) is made of bytes, so this function converts between
     /// the two. Not all byte slices are valid `JavaString`s, however:
-    /// `JavaString` requires that it is valid Java CESU-8. `from_java_cesu8` checks to
-    /// ensure that the bytes are valid Java CESU-8, and then does the conversion.
+    /// `JavaString` requires that it is valid Java CESU-8. `from_java_cesu8`
+    /// checks to ensure that the bytes are valid Java CESU-8, and then does
+    /// the conversion.
     ///
-    /// If you are sure that the byte slice is valid Java CESU-8, and you don't want
-    /// to incur the overhead of the validity check, there is an unsafe version
-    /// of this function, [`from_java_cesu8_unchecked`], which has the same behavior
-    /// but skips the check.
+    /// If you are sure that the byte slice is valid Java CESU-8, and you don't
+    /// want to incur the overhead of the validity check, there is an unsafe
+    /// version of this function, [`from_java_cesu8_unchecked`], which has
+    /// the same behavior but skips the check.
     ///
     /// This method will take care to not to copy the vector, for efficiency's
     /// sake.
@@ -87,8 +88,9 @@ impl JavaString {
     ///
     /// # Errors
     ///
-    /// Returns [`Err`] if the slice is not Java CESU-8 with the index and length of
-    /// the invalid byte. The vector you moved in is also included.
+    /// Returns [`Err`] if the slice is not Java CESU-8 with the index and
+    /// length of the invalid byte. The vector you moved in is also
+    /// included.
     #[inline]
     pub fn from_java_cesu8(vec: Vec<u8>) -> Result<JavaString, (EncodingError, Vec<u8>)> {
         match validate_cesu8_internal::<true>(&vec) {
@@ -117,8 +119,8 @@ impl JavaString {
     /// Violating these may cause problems like correcting the allocator's
     /// internal data structures. For example, it is normally **not** safe to
     /// build a `JavaString` from a pointer to a C `char` array containing
-    /// Java CESU-8 _unless_ you are certain that array was originally allocated by
-    /// the Rust standard library's allocator.
+    /// Java CESU-8 _unless_ you are certain that array was originally allocated
+    /// by the Rust standard library's allocator.
     ///
     /// The ownership of `buf` is effectively transferred to the
     /// `JavaString` which may then deallocate, reallocate, or change the
@@ -140,8 +142,8 @@ impl JavaString {
     /// # Safety
     ///
     /// This function is unsafe because it does not check that the bytes passed
-    /// to it are valid Java CESU-8. If this constraint is violated, it may cause
-    /// memory unsafety issues with future users of the `JavaString`.
+    /// to it are valid Java CESU-8. If this constraint is violated, it may
+    /// cause memory unsafety issues with future users of the `JavaString`.
     #[inline]
     #[must_use]
     pub unsafe fn from_java_cesu8_unchecked(bytes: Vec<u8>) -> JavaString {
@@ -343,10 +345,10 @@ impl JavaString {
     /// # Safety
     ///
     /// This function is unsafe because the returned `&mut Vec` allows writing
-    /// bytes which are not valid Java Java CESU-8. If this constraint is violated,
-    /// using the original `JavaString` after dropping the `&mut Vec` may
-    /// violate memory safety, as `JavaString`s are expected to always contains
-    /// valid Java Java CESU-8.
+    /// bytes which are not valid Java Java CESU-8. If this constraint is
+    /// violated, using the original `JavaString` after dropping the `&mut Vec`
+    /// may violate memory safety, as `JavaString`s are expected to always
+    /// contains valid Java Java CESU-8.
     #[inline]
     pub unsafe fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.internal.as_mut_vec()
