@@ -46,7 +46,7 @@ impl JavaStr {
     /// a description as to why the provided slice is
     /// not Java CESU-8.
     #[inline]
-    pub fn from_java_cesu8(v: &[u8]) -> Result<&JavaStr, EncodingError> {
+    pub const fn from_java_cesu8(v: &[u8]) -> Result<&JavaStr, EncodingError> {
         match validate_cesu8_internal::<true>(v) {
             Ok(()) => Ok(unsafe { JavaStr::from_java_cesu8_unchecked(v) }),
             Err(e) => Err(e),

@@ -144,7 +144,7 @@ impl Cesu8String {
     /// memory unsafety issues with future users of the `Cesu8String`.
     #[inline]
     #[must_use]
-    pub unsafe fn from_cesu8_unchecked(bytes: Vec<u8>) -> Cesu8String {
+    pub const unsafe fn from_cesu8_unchecked(bytes: Vec<u8>) -> Cesu8String {
         Cesu8String {
             internal: InternalString::from_unchecked(bytes),
         }
@@ -161,7 +161,7 @@ impl Cesu8String {
     /// the `Cesu8String`.
     #[inline]
     #[must_use]
-    pub(crate) unsafe fn from_internal_unchecked(internal: InternalString) -> Cesu8String {
+    pub(crate) const unsafe fn from_internal_unchecked(internal: InternalString) -> Cesu8String {
         Cesu8String { internal }
     }
 

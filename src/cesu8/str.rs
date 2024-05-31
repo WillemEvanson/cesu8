@@ -46,7 +46,7 @@ impl Cesu8Str {
     /// a description as to why the provided slice is
     /// not CESU-8.
     #[inline]
-    pub fn from_cesu8(v: &[u8]) -> Result<&Cesu8Str, EncodingError> {
+    pub const fn from_cesu8(v: &[u8]) -> Result<&Cesu8Str, EncodingError> {
         match validate_cesu8_internal::<false>(v) {
             Ok(()) => Ok(unsafe { Cesu8Str::from_cesu8_unchecked(v) }),
             Err(e) => Err(e),

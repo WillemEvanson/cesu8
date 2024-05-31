@@ -146,7 +146,7 @@ impl JavaString {
     /// cause memory unsafety issues with future users of the `JavaString`.
     #[inline]
     #[must_use]
-    pub unsafe fn from_java_cesu8_unchecked(bytes: Vec<u8>) -> JavaString {
+    pub const unsafe fn from_java_cesu8_unchecked(bytes: Vec<u8>) -> JavaString {
         JavaString {
             internal: InternalString::from_unchecked(bytes),
         }
@@ -163,7 +163,7 @@ impl JavaString {
     /// users of the `JavaString`.
     #[inline]
     #[must_use]
-    pub(crate) unsafe fn from_internal_unchecked(internal: InternalString) -> JavaString {
+    pub(crate) const unsafe fn from_internal_unchecked(internal: InternalString) -> JavaString {
         JavaString { internal }
     }
 
