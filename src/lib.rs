@@ -78,7 +78,7 @@ impl EncodingError {
 
     /// Provides more information about the failure:
     /// * `None`: the end of the input was reached unexpectedly.
-    ///   `self.valid_up_to()` is 1 to 3 bytes from the end of the input. If a
+    ///   `self.valid_up_to()` is 1 to 6 bytes from the end of the input. If a
     ///   byte stream (such as a file or network socket) is being decoded
     ///   incrementally, this could be a valid `char` whose UTF-8 byte sequence
     ///   is spanning multiple chunks.
@@ -317,7 +317,7 @@ const fn validate_cesu8_internal<const CHECK_JAVA: bool>(v: &[u8]) -> Result<(),
         } else if first & 0b1110_0000 == 0b1100_0000 {
             // 2-byte characters
             if index + 1 >= len {
-                err!(1);
+                err!(0);
             }
             let second = v[index + 1];
             if second & 0b1100_0000 != 0b1000_0000 {
@@ -328,7 +328,7 @@ const fn validate_cesu8_internal<const CHECK_JAVA: bool>(v: &[u8]) -> Result<(),
         } else if first & 0b1111_0000 == 0b1110_0000 {
             // 3-byte characters
             if index + 2 >= len {
-                err!(1);
+                err!(0);
             }
 
             let second = v[index + 1];
@@ -355,7 +355,7 @@ const fn validate_cesu8_internal<const CHECK_JAVA: bool>(v: &[u8]) -> Result<(),
             } else {
                 // Surrogate pair
                 if index + 5 >= len {
-                    err!(1);
+                    err!(0);
                 }
                 let fourth = v[index + 3];
                 let fifth = v[index + 4];
