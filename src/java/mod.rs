@@ -38,7 +38,7 @@ pub fn encode_java(c: char, dst: &mut [u8]) -> &mut [u8] {
 #[inline]
 #[must_use]
 pub fn from_java_cesu8(str: &JavaStr) -> Cow<'_, str> {
-    unsafe { super::from_cesu8::<true>(&str.internal) }
+    super::from_cesu8::<true>(&str.internal)
 }
 
 /// Converts a `str` into a `JavaStr`. We avoid copying unless necessary. In
@@ -48,7 +48,10 @@ pub fn from_java_cesu8(str: &JavaStr) -> Cow<'_, str> {
 #[inline]
 #[must_use]
 pub fn from_utf8(str: &str) -> Cow<'_, JavaStr> {
-    unsafe { core::mem::transmute(super::from_utf8::<true>(str)) }
+    match super::from_utf8::<true>(str) {
+        Cow::Owned(string) => Cow::Owned(unsafe { JavaString::from_internal_unchecked(string) }),
+        Cow::Borrowed(str) => Cow::Borrowed(unsafe { JavaStr::from_internal_unchecked(str)} )
+    }
 }
 
 #[cfg(test)]

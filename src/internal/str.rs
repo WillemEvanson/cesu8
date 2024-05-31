@@ -14,6 +14,7 @@ use alloc::borrow::ToOwned;
 #[cfg(feature = "alloc")]
 use alloc::boxed::Box;
 
+/// A CESU-8 encoded string slice.
 #[repr(transparent)]
 #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub(crate) struct InternalStr {

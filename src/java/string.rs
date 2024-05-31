@@ -152,6 +152,21 @@ impl JavaString {
         }
     }
 
+    /// Converts an internal string to a `JavaString` without checking that the
+    /// string contains valid Java CESU-8.
+    ///
+    /// # Safety
+    ///
+    /// This function is unsafe because it does not check that the
+    /// `InternalString` passed to it contains valid Java CESU-8. If this
+    /// constraint is violated, it may cause memory unsafety issues with future
+    /// users of the `JavaString`.
+    #[inline]
+    #[must_use]
+    pub(crate) unsafe fn from_internal_unchecked(internal: InternalString) -> JavaString {
+        JavaString { internal }
+    }
+
     /// Converts a `JavaString` into a byte vector.
     ///
     /// This consumes the `JavaString`, so we do not need to copy its contents.

@@ -183,14 +183,9 @@ impl FromVecError {
 }
 
 /// Converts bytes in CESU-8 format into UTF-8 format.
-///
-/// # Safety
-///
-/// The `JAVA` value must be passed correctly depending on if the string is
-/// normal CESU-8 or Java CESU-8.
 #[cfg(feature = "alloc")]
 #[inline]
-unsafe fn from_cesu8<const JAVA: bool>(str: &internal::InternalStr) -> Cow<'_, str> {
+fn from_cesu8<const JAVA: bool>(str: &internal::InternalStr) -> Cow<'_, str> {
     let mut index = 0;
     let mut last_index = 0;
     let mut string = None;
@@ -239,14 +234,9 @@ unsafe fn from_cesu8<const JAVA: bool>(str: &internal::InternalStr) -> Cow<'_, s
 }
 
 /// Converts bytes in UTF-8 format into CESU-8 format.
-///
-/// # Safety
-///
-/// The `JAVA` value must be passed correctly depending whether we are
-/// converting to normal CESU-8 or Java CESU-8.
 #[cfg(feature = "alloc")]
 #[inline]
-unsafe fn from_utf8<const JAVA: bool>(str: &str) -> Cow<'_, internal::InternalStr> {
+fn from_utf8<const JAVA: bool>(str: &str) -> Cow<'_, internal::InternalStr> {
     let mut index = 0;
     let mut last_index = 0;
     let mut string = None;

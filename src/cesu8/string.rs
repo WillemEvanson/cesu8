@@ -150,6 +150,21 @@ impl Cesu8String {
         }
     }
 
+    /// Converts an internal string to a `Cesu8String` without checking that the
+    /// string contains valid Java CESU-8.
+    ///
+    /// # Safety
+    ///
+    /// This function is unsafe because it does not check that the
+    /// `InternalString` passed to it contains valid CESU-8. If this constraint
+    /// is violated, it may cause memory unsafety issues with future users of
+    /// the `Cesu8String`.
+    #[inline]
+    #[must_use]
+    pub(crate) unsafe fn from_internal_unchecked(internal: InternalString) -> Cesu8String {
+        Cesu8String { internal }
+    }
+
     /// Converts a `Cesu8String` into a byte vector.
     ///
     /// This consumes the `Cesu8String`, so we do not need to copy its contents.

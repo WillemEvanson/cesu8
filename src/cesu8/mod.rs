@@ -38,7 +38,7 @@ pub fn encode_cesu8(c: char, dst: &mut [u8]) -> &mut [u8] {
 #[inline]
 #[must_use]
 pub fn from_cesu8(str: &Cesu8Str) -> Cow<'_, str> {
-    unsafe { super::from_cesu8::<false>(&str.internal) }
+    super::from_cesu8::<false>(&str.internal)
 }
 
 /// Converts a `str` into a `Cesu8Str`. We avoid copying unless necessary. In
@@ -48,7 +48,10 @@ pub fn from_cesu8(str: &Cesu8Str) -> Cow<'_, str> {
 #[inline]
 #[must_use]
 pub fn from_utf8(str: &str) -> Cow<'_, Cesu8Str> {
-    unsafe { core::mem::transmute(super::from_utf8::<false>(str)) }
+    match super::from_utf8::<true>(str) {
+        Cow::Owned(string) => Cow::Owned(unsafe { Cesu8String::from_internal_unchecked(string) }),
+        Cow::Borrowed(str) => Cow::Borrowed(unsafe { Cesu8Str::from_internal_unchecked(str)} )
+    }
 }
 
 #[cfg(test)]
