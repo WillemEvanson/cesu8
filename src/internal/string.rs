@@ -222,7 +222,7 @@ impl InternalString {
     #[inline]
     pub(crate) fn push<const JAVA: bool>(&mut self, c: char) {
         self.vec
-            .extend_from_slice(encode_cesu8_raw::<JAVA>(c as u32, &mut [0; 4]));
+            .extend_from_slice(encode_cesu8_raw::<JAVA>(c as u32, &mut [0; 6]));
     }
 
     /// Returns a byte slice of this `InternalString`'s contents.
