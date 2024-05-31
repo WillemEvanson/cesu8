@@ -50,7 +50,7 @@ pub fn from_cesu8(str: &Cesu8Str) -> Cow<'_, str> {
 pub fn from_utf8(str: &str) -> Cow<'_, Cesu8Str> {
     match super::from_utf8::<true>(str) {
         Cow::Owned(string) => Cow::Owned(unsafe { Cesu8String::from_internal_unchecked(string) }),
-        Cow::Borrowed(str) => Cow::Borrowed(unsafe { Cesu8Str::from_internal_unchecked(str)} )
+        Cow::Borrowed(str) => Cow::Borrowed(unsafe { Cesu8Str::from_internal_unchecked(str) }),
     }
 }
 

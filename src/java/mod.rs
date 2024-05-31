@@ -50,7 +50,7 @@ pub fn from_java_cesu8(str: &JavaStr) -> Cow<'_, str> {
 pub fn from_utf8(str: &str) -> Cow<'_, JavaStr> {
     match super::from_utf8::<true>(str) {
         Cow::Owned(string) => Cow::Owned(unsafe { JavaString::from_internal_unchecked(string) }),
-        Cow::Borrowed(str) => Cow::Borrowed(unsafe { JavaStr::from_internal_unchecked(str)} )
+        Cow::Borrowed(str) => Cow::Borrowed(unsafe { JavaStr::from_internal_unchecked(str) }),
     }
 }
 
