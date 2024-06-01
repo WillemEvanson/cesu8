@@ -54,6 +54,35 @@ pub fn from_utf8(str: &str) -> Cow<'_, Cesu8Str> {
     }
 }
 
+pub mod macros {
+    /// Builds a `CesuStr` literal at compile time from a string literal.
+    #[macro_export]
+    macro_rules! cesu8_str {
+        ($str:tt) => {{
+            const _CESU8_STR_MACRO_STR: &str = $str;
+            const _CESU8_STR_MACRO_LEN: usize =
+                $crate::cesu8::macros::required_cesu8_len(_CESU8_STR_MACRO_STR);
+            const _CESU8_STR_MACRO_BUF: [u8; _CESU8_STR_MACRO_LEN] =
+                $crate::cesu8::macros::create_cesu8_array(_CESU8_STR_MACRO_STR);
+            unsafe { $crate::cesu8::Cesu8Str::from_cesu8_unchecked(&_CESU8_STR_MACRO_BUF) }
+        }};
+    }
+
+    /// Calculate the amount of bytes required to encode `str` in CESU-8.
+    #[inline]
+    #[must_use]
+    pub const fn required_cesu8_len(str: &str) -> usize {
+        crate::required_len::<false>(str)
+    }
+
+    /// Creates a buffer of CESU-8 encoded bytes from `str`.
+    #[inline]
+    #[must_use]
+    pub const fn create_cesu8_array<const N: usize>(str: &str) -> [u8; N] {
+        crate::create_array::<false, N>(str)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::validate_cesu8_internal;
