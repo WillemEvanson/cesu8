@@ -422,7 +422,7 @@ impl JavaString {
     #[must_use]
     pub fn leak<'a>(self) -> &'a mut JavaStr {
         let str = self.internal.leak();
-        unsafe { &mut *(str as *mut InternalStr as *mut JavaString) }
+        unsafe { &mut *(str as *mut InternalStr as *mut JavaStr) }
     }
 }
 

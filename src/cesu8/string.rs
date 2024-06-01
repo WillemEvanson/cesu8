@@ -420,7 +420,7 @@ impl Cesu8String {
     #[must_use]
     pub fn leak<'a>(self) -> &'a mut Cesu8Str {
         let str = self.internal.leak();
-        unsafe { &mut *(str as *mut InternalStr as *mut Cesu8String) }
+        unsafe { &mut *(str as *mut InternalStr as *mut Cesu8Str) }
     }
 }
 
