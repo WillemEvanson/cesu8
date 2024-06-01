@@ -1,4 +1,3 @@
-#![cfg(feature = "alloc")]
 use super::Cesu8Str;
 use crate::internal::{InternalStr, InternalString};
 use crate::{validate_cesu8_internal, EncodingError};

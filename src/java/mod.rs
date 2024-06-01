@@ -1,5 +1,7 @@
 mod iter;
 mod str;
+
+#[cfg(feature = "alloc")]
 mod string;
 
 pub use iter::{JavaCharIndices, JavaChars};
