@@ -1,6 +1,6 @@
 use super::JavaStr;
 use crate::internal::{InternalStr, InternalString};
-use crate::{validate_cesu8_internal, EncodingError};
+use crate::{validate_cesu8_internal, FromVecError};
 
 use core::borrow::Borrow;
 use core::ops::{Deref, DerefMut};
@@ -91,14 +91,14 @@ impl JavaString {
     /// length of the invalid byte. The vector you moved in is also
     /// included.
     #[inline]
-    pub fn from_java_cesu8(vec: Vec<u8>) -> Result<JavaString, (EncodingError, Vec<u8>)> {
+    pub fn from_java_cesu8(vec: Vec<u8>) -> Result<JavaString, FromVecError> {
         match validate_cesu8_internal::<true>(&vec) {
             Ok(()) => unsafe {
                 Ok(JavaString {
                     internal: InternalString::from_unchecked(vec),
                 })
             },
-            Err(e) => Err((e, vec)),
+            Err(e) => Err(FromVecError { bytes: vec, error: e}),
         }
     }
 

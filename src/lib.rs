@@ -182,6 +182,13 @@ impl FromVecError {
     }
 }
 
+impl core::fmt::Display for FromVecError {
+    #[inline]
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Display::fmt(&self.error, f)
+    }
+}
+
 /// Converts bytes in CESU-8 format into UTF-8 format.
 #[cfg(feature = "alloc")]
 #[inline]

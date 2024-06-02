@@ -1,6 +1,6 @@
 use super::Cesu8Str;
 use crate::internal::{InternalStr, InternalString};
-use crate::{validate_cesu8_internal, EncodingError};
+use crate::{validate_cesu8_internal, FromVecError};
 
 use core::borrow::Borrow;
 use core::ops::{Deref, DerefMut};
@@ -89,14 +89,14 @@ impl Cesu8String {
     /// Returns [`Err`] if the slice is not CESU-8 with the index and length of
     /// the invalid byte. The vector you moved in is also included.
     #[inline]
-    pub fn from_cesu8(vec: Vec<u8>) -> Result<Cesu8String, (EncodingError, Vec<u8>)> {
+    pub fn from_cesu8(vec: Vec<u8>) -> Result<Cesu8String, FromVecError> {
         match validate_cesu8_internal::<false>(&vec) {
             Ok(()) => unsafe {
                 Ok(Cesu8String {
                     internal: InternalString::from_unchecked(vec),
                 })
             },
-            Err(e) => Err((e, vec)),
+            Err(e) => Err(FromVecError { bytes: vec, error: e }),
         }
     }
 
