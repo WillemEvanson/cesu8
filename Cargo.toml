@@ -1,6 +1,6 @@
 [package]
 name = "cesu8-str"
-version = "1.2.0"
+version = "1.2.1"
 authors = ["Willem Evanson <willemevanson@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/WillemEvanson/cesu8"
