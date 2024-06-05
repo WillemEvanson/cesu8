@@ -584,7 +584,7 @@ pub(crate) const fn required_len<const JAVA: bool>(str: &str) -> usize {
     let v = str.as_bytes();
     while i < v.len() {
         let first = v[i];
-        if first & 0b1111_1000 != 0b1111_0000 {
+        if first & 0b1111_1000 == 0b1111_0000 {
             len += 6;
             i += 4;
         } else if JAVA && first == 0 {
